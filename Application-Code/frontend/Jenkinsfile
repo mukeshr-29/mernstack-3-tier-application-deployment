@@ -23,14 +23,14 @@ pipeline{
         }
         stage('install dependencies'){
             steps{
-                dir('Application-code/frontend'){
+                dir('Application-Code/frontend'){
                     sh 'npm install'
                 }
             }
         }
         stage('trivy file scanning'){
             steps{
-                dir('Application-code/frontend'){
+                dir('Application-Code/frontend'){
                     sh 'trivy fs --format table -o trivyfsfn.html .'
                 }
             }
@@ -38,7 +38,7 @@ pipeline{
         stage('sonarqube analysis'){
             steps{
                 script{
-                    dir('Application-code/frontend'){
+                    dir('Application-Code/frontend'){
                         withSonarQubeEnv('sonar-server'){
                             sh '''
                                 $SCANNER_HOME/bin/sonnar-scanner -Dsonar.projectName=frontend \
@@ -58,7 +58,7 @@ pipeline{
         }
         stage('owasp check'){
             steps{
-                dir('Application-code/frontend'){
+                dir('Application-Code/frontend'){
                     dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit', odcInstallation: 'dp-check'
                     dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
                 }
@@ -67,7 +67,7 @@ pipeline{
         stage('build docker image'){
             steps{
                 script{
-                    dir('Application-code/frontend'){
+                    dir('Application-Code/frontend'){
                         sh 'docker build -t ${AWS_ECR_REPO_NAME} .'
                     }
                 }
