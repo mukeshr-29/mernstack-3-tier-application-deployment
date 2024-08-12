@@ -21,13 +21,13 @@ pipeline{
                 git branch: 'main', url: 'https://github.com/mukeshr-29/mernstack-3-tier-application-deployment.git'
             }
         }
-        stage('install dependencies'){
-            steps{
-                dir('Application-Code/frontend'){
-                    sh 'npm install'
-                }
-            }
-        }
+        // stage('install dependencies'){
+        //     steps{
+        //         dir('Application-Code/frontend'){
+        //             sh 'npm install'
+        //         }
+        //     }
+        // }
         stage('trivy file scanning'){
             steps{
                 dir('Application-Code/frontend'){
@@ -75,7 +75,7 @@ pipeline{
         }
         stage('image tag'){
             steps{
-                sh 'docker tag ${AWS_ECR_REPO_NAME} ${REPOSITORY_URI}${AWS_ECR_REPO_NAME}:${BUILD_NUMBER}'
+                sh 'docker tag ${AWS_ECR_REPO_NAME}:latest ${REPOSITORY_URI}${AWS_ECR_REPO_NAME}:${BUILD_NUMBER}'
             }
         }
         stage('image scan using trivy'){
