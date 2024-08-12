@@ -89,7 +89,7 @@ pipeline{
             steps{
                 script{
                     sh 'aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${REPOSITORY_URL}'
-                    sh 'docker push ${REPOSITORY_URL}${AWS_ECR_REPO_NAME}:${BUILD_NUMBER}'
+                    sh 'docker push ${REPOSITORY_URI}${AWS_ECR_REPO_NAME}:${BUILD_NUMBER}'
                 }
             }
         }
