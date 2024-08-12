@@ -80,7 +80,7 @@ pipeline{
         }
         stage('image scan using trivy'){
             steps{
-                sh 'trivy image --format table -o trivyimg1.html ${REPOSITORY_URI}${AWS_ECR_REPO_NAME}:${BUILD_NUMBER}'
+                sh 'docker tag ${AWS_ECR_REPO_NAME} ${REPOSITORY_URI}${AWS_ECR_REPO_NAME}:${BUILD_NUMBER}'
             }
         }
         stage('image push to ecr'){
